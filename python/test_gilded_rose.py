@@ -55,6 +55,22 @@ class GildedRoseTest(unittest.TestCase):
             self.assertLessEqual(item.quality, 50)
             print(item)
 
+    #  - "Conjured" items degrade in Quality twice as fast as normal item
+    def test_conjured(self):
+        items = [Item("Conjured", 5, 5)]
+        gilded_rose = GildedRose(items)
+        print()
+        for ii in range(10):
+            gilded_rose_prec = deepcopy(gilded_rose)
+            gilded_rose.update_quality()
+            for prec, cur in zip(gilded_rose_prec.items, gilded_rose.items):
+                if prec.sell_in > 0:
+                    self.assertEqual(prec.quality - 2, cur.quality)
+                else:
+                    self.assertEqual(max(prec.quality - 4, 0), cur.quality)
+            print(gilded_rose_prec, gilded_rose)
+            # print(item)
+
 
 if __name__ == "__main__":
     unittest.main()
