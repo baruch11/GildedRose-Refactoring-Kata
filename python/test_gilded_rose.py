@@ -55,6 +55,19 @@ class GildedRoseTest(unittest.TestCase):
             self.assertLessEqual(item.quality, 50)
             print(item)
 
+    # - "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
+    def test_sulfuras(self):
+        items = [Item("Sulfuras, Hand of Ragnaros", 5, 5)]
+        gilded_rose = GildedRose(items)
+        print()
+        for ii in range(10):
+            gilded_rose_prec = deepcopy(gilded_rose)
+            gilded_rose.update_quality()
+            for prec, cur in zip(gilded_rose_prec.items, gilded_rose.items):
+                self.assertEqual(prec.quality, cur.quality)
+                self.assertEqual(prec.sell_in, cur.sell_in)
+            print(gilded_rose_prec, gilded_rose)
+
     #  - "Conjured" items degrade in Quality twice as fast as normal item
     def test_conjured(self):
         items = [Item("Conjured", 5, 5)]
