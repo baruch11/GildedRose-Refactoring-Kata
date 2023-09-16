@@ -35,14 +35,17 @@ class GildedRoseTest(unittest.TestCase):
         gilded_rose = GildedRose(items)
         print()
         item = items[0]
+        print()
         for ii in range(40):
+            gilded_rose_prec = deepcopy(gilded_rose)
+            gilded_rose.update_quality()
+            print(gilded_rose_prec, gilded_rose)
             sell_in, quality = item.sell_in, item.quality
             gilded_rose.update_quality()
             if sell_in > 0:
                 self.assertEqual(min(quality + 1, 50), item.quality)
             else:
                 self.assertEqual(min(quality + 2, 50), item.quality)
-            print(item)
 
     #  - The Quality of an item is never more than 50
     def test_limit_50(self):
@@ -97,7 +100,7 @@ class GildedRoseTest(unittest.TestCase):
             gilded_rose.update_quality()
             for prec, cur in zip(gilded_rose_prec.items, gilded_rose.items):
                 if prec.sell_in > 0:
-                    self.assertEqual(prec.quality - 2, cur.quality)
+                    self.assertEqual(max(prec.quality - 2, 0), cur.quality)
                 else:
                     self.assertEqual(max(prec.quality - 4, 0), cur.quality)
             print(gilded_rose_prec, gilded_rose)
