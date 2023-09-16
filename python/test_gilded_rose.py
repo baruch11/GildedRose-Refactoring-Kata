@@ -68,6 +68,25 @@ class GildedRoseTest(unittest.TestCase):
                 self.assertEqual(prec.sell_in, cur.sell_in)
             print(gilded_rose_prec, gilded_rose)
 
+    # - "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches;
+    def test_backstages(self):
+        items = [Item("Backstage passes to a TAFKAL80ETC concert", 15, 5)]
+        gilded_rose = GildedRose(items)
+        print()
+        for ii in range(20):
+            gilded_rose_prec = deepcopy(gilded_rose)
+            gilded_rose.update_quality()
+            print(gilded_rose_prec, gilded_rose)
+            for prec, cur in zip(gilded_rose_prec.items, gilded_rose.items):
+                if prec.sell_in > 10:
+                    self.assertEqual(prec.quality + 1, cur.quality)
+                elif prec.sell_in > 5:
+                    self.assertEqual(prec.quality + 2, cur.quality)
+                elif prec.sell_in > 0:
+                    self.assertEqual(prec.quality + 3, cur.quality)
+                else:
+                    self.assertEqual(cur.quality, 0)
+
     #  - "Conjured" items degrade in Quality twice as fast as normal item
     def test_conjured(self):
         items = [Item("Conjured", 5, 5)]
